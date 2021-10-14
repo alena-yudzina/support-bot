@@ -39,7 +39,9 @@ def start(update, context):
 
 
 def echo(update, context):
-    text = detect_intent_texts('newagent-oqju', update.effective_chat.id, update.message.text, language_code='ru')
+    dialogflow_project_id = os.environ['PROJECT_ID']
+
+    text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=text
@@ -49,7 +51,6 @@ def echo(update, context):
 def main():
     load_dotenv()
     bot_token = os.environ['BOT_TOKEN']
-    project_id = os.environ['PROJECT_ID']
     
     updater = Updater(bot_token)
     dispatcher = updater.dispatcher

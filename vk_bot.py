@@ -21,15 +21,21 @@ def detect_intent_texts(project_id, session_id, text, language_code):
         request={"session": session, "query_input": query_input}
     )
 
+    if response.query_result.intent.is_fallback:
+        return None
     return response.query_result.fulfillment_text
 
 
 def echo(event, vk_api):
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=detect_intent_texts('newagent-oqju', event.user_id, event.text, language_code='ru'),
-        random_id=random.randint(1,1000)
-    )
+    dialogflow_project_id = os.environ['PROJECT_ID']
+    
+    message = detect_intent_texts(dialogflow_project_id, event.user_id, event.text, language_code='ru')
+    if message:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=message,
+            random_id=random.randint(1,1000)
+        )
 
 
 def main():
