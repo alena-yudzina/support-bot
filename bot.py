@@ -49,6 +49,7 @@ def echo(update, context):
 def main():
     load_dotenv()
     bot_token = os.environ['BOT_TOKEN']
+    project_id = os.environ['PROJECT_ID']
     
     updater = Updater(bot_token)
     dispatcher = updater.dispatcher
