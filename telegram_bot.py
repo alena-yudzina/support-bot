@@ -1,17 +1,24 @@
 import logging
 import os
 
+import telegram
 from dotenv import load_dotenv
 from google.cloud import dialogflow
-from telegram import ForceReply, Update
-from telegram.ext import (CallbackContext, CommandHandler, Filters,
+from telegram.ext import (CommandHandler, Filters,
                           MessageHandler, Updater)
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
+logger = logging.getLogger('Logger')
 
-logger = logging.getLogger(__name__)
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_bot, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.tg_bot = tg_bot
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def detect_intent_texts(project_id, session_id, text, language_code):
@@ -39,19 +46,29 @@ def start(update, context):
 
 
 def echo(update, context):
+    # Не понимаю, как перенести ключ в main
     dialogflow_project_id = os.environ['PROJECT_ID']
-
-    text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=text
-    )
+    try:
+        text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text
+        )
+    except Exception:
+        logger.exception('Проблема:')
 
 
 def main():
     load_dotenv()
     bot_token = os.environ['BOT_TOKEN']
+    log_bot_token = os.environ['LOG_BOT_TOKEN']
+    chat_id = os.environ['CHAT_ID']
     
+    log_bot = telegram.Bot(token=log_bot_token)
+
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
+
     updater = Updater(bot_token)
     dispatcher = updater.dispatcher
 
