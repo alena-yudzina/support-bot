@@ -1,4 +1,5 @@
 import json
+import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
@@ -28,12 +29,20 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
     )
 
 
-load_dotenv()
-with open('training.json', 'r') as f:
-  training_phrases = json.load(f)
-project_id = 'newagent-oqju'
-display_name = list(training_phrases.keys())[0]
-training_phrases_parts = training_phrases[display_name]['questions']
-message_texts = [training_phrases[display_name]['answer']]
+def main():
+    load_dotenv()
+    project_id = os.environ['PROJECT_ID']
 
-create_intent(project_id, display_name, training_phrases_parts, message_texts)
+    with open('training.json', 'r') as f:
+        training_phrases = json.load(f)
+    
+    project_id = 'newagent-oqju'
+    display_name = list(training_phrases.keys())[0]
+    training_phrases_parts = training_phrases[display_name]['questions']
+    message_texts = [training_phrases[display_name]['answer']]
+
+    create_intent(project_id, display_name, training_phrases_parts, message_texts)
+
+
+if __name__ == '__main__':
+    main()
