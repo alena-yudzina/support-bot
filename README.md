@@ -5,7 +5,7 @@
 - `@devman_support_bot`
 - [https://vk.com/public207893297](https://vk.com/public207893297)
 
-![Пример](http://www.giphy.com/gifs/Rf44wbibAwBLbsmexH)
+![Пример](https://media1.giphy.com/media/Rf44wbibAwBLbsmexH/giphy.gif?cid=790b7611ed4ea85b229c9505d657c792a18047fd37797072&rid=giphy.gif&ct=g)
 
 ### Как установить
 
