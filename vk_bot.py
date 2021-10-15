@@ -11,7 +11,7 @@ from intent_converter import detect_intent_texts
 from logger import TelegramLogsHandler
 
 
-def echo(event, vk_api, dialogflow_project_id):
+def send_answer(event, vk_api, dialogflow_project_id):
     message = detect_intent_texts(dialogflow_project_id, event.user_id, event.text, language_code='ru')
     if message:
         vk_api.messages.send(
@@ -40,7 +40,7 @@ def main():
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             try:
-                echo(event, vk_api, dialogflow_project_id)
+                send_answer(event, vk_api, dialogflow_project_id)
             except Exception:
                 logger.exception('Проблема:')
 

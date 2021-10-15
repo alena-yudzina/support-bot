@@ -18,7 +18,7 @@ def start(update, context):
     )
 
 
-def echo(update, context):
+def send_answer(update, context):
     # Не понимаю, как перенести ключ в main
     dialogflow_project_id = os.environ['PROJECT_ID']
     try:
@@ -46,7 +46,7 @@ def main():
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), echo))
+    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), send_answer))
 
     updater.start_polling()
     updater.idle()
