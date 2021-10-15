@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+from google.api_core.exceptions import InvalidArgument
 
 
 def create_intent(project_id, display_name, training_phrases_parts, message_texts):
@@ -32,16 +33,20 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 def main():
     load_dotenv()
     project_id = os.environ['PROJECT_ID']
+    training_file = os.environ['TRAINING']
 
-    with open('training.json', 'r') as f:
+    with open(training_file, 'r') as f:
         training_phrases = json.load(f)
     
     project_id = 'newagent-oqju'
-    display_name = list(training_phrases.keys())[0]
-    training_phrases_parts = training_phrases[display_name]['questions']
-    message_texts = [training_phrases[display_name]['answer']]
-
-    create_intent(project_id, display_name, training_phrases_parts, message_texts)
+    for key in training_phrases.keys():
+        display_name = key
+        training_phrases_parts = training_phrases[display_name]['questions']
+        message_texts = [training_phrases[display_name]['answer']]
+        try:
+            create_intent(project_id, display_name, training_phrases_parts, message_texts)
+        except InvalidArgument:
+            continue
 
 
 if __name__ == '__main__':
