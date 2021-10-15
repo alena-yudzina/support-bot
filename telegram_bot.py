@@ -21,14 +21,12 @@ def start(update, context):
 def send_answer(update, context):
     # Не понимаю, как перенести ключ в main
     dialogflow_project_id = os.environ['PROJECT_ID']
-    try:
-        text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
-        context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text
-        )
-    except Exception:
-        logger.exception('Проблема:')
+    text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=text
+    )
+    logger.exception('Проблема:')
 
 
 def main():
@@ -47,6 +45,7 @@ def main():
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), send_answer))
+    dispatcher.add_error_handler(TelegramLogsHandler(log_bot, chat_id))
 
     updater.start_polling()
     updater.idle()
