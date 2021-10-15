@@ -19,8 +19,8 @@ def start(update, context):
 
 
 def send_answer(update, context):
-    # Не понимаю, как перенести ключ в main
-    dialogflow_project_id = os.environ['PROJECT_ID']
+
+    dialogflow_project_id = context.bot_data['project_id']
     text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -42,6 +42,7 @@ def main():
 
     updater = Updater(bot_token)
     dispatcher = updater.dispatcher
+    dispatcher.bot_data['project_id'] = os.environ['PROJECT_ID']
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), send_answer))
