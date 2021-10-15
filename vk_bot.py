@@ -11,8 +11,11 @@ from intent_converter import detect_intent_texts
 from logger import TelegramLogsHandler
 
 
+logger = logging.getLogger('Logger')
+
+
 def send_answer(event, vk_api, dialogflow_project_id):
-    message = detect_intent_texts(dialogflow_project_id, event.user_id, event.text, language_code='ru')
+    message = detect_intent_texts(dialogflow_project_id, f'vk_{event.user_id}', event.text, language_code='ru')
     if message:
         vk_api.messages.send(
             user_id=event.user_id,
@@ -30,7 +33,6 @@ def main():
 
     log_bot = telegram.Bot(token=log_bot_token)
 
-    logger = logging.getLogger('Logger')
     logger.setLevel(logging.WARNING)
     logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
 

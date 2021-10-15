@@ -21,12 +21,17 @@ def start(update, context):
 def send_answer(update, context):
 
     dialogflow_project_id = context.bot_data['project_id']
-    text = detect_intent_texts(dialogflow_project_id, update.effective_chat.id, update.message.text, language_code='ru')
+
+    text = detect_intent_texts(
+        dialogflow_project_id,
+        f'tg_{update.effective_chat.id}',
+        update.message.text,
+        language_code='ru'
+    )
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=text
     )
-    logger.exception('Проблема:')
 
 
 def main():
