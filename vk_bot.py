@@ -7,7 +7,8 @@ import vk_api as vk
 from dotenv import load_dotenv
 from vk_api.longpoll import VkEventType, VkLongPoll
 
-from telegram_bot import TelegramLogsHandler, detect_intent_texts
+from intent_converter import detect_intent_texts
+from logger import TelegramLogsHandler
 
 
 def echo(event, vk_api, dialogflow_project_id):
