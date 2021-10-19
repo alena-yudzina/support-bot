@@ -19,7 +19,6 @@ def start(update, context):
 
 
 def send_answer(update, context):
-    1/0
     dialogflow_project_id = context.bot_data['project_id']
 
     text = detect_intent_texts(
