@@ -38,7 +38,6 @@ def main():
     with open(training_file, 'r') as f:
         training_phrases = json.load(f)
     
-    project_id = 'newagent-oqju'
     for key in training_phrases.keys():
         display_name = key
         training_phrases_parts = training_phrases[display_name]['questions']
