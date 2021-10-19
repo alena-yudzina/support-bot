@@ -38,11 +38,11 @@ def main():
     with open(training_file, 'r') as f:
         training_phrases = json.load(f)
     
-    for display_name in training_phrases.keys():
-        training_phrases_parts = training_phrases[display_name]['questions']
-        message_texts = [training_phrases[display_name]['answer']]
+    for display_name, phrases in training_phrases.items():
+        questions = phrases['questions']
+        answers = [phrases['answer']]
         try:
-            create_intent(project_id, display_name, training_phrases_parts, message_texts)
+            create_intent(project_id, display_name, questions, answers)
         except InvalidArgument:
             continue
 
