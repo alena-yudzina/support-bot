@@ -7,7 +7,7 @@ import vk_api as vk
 from dotenv import load_dotenv
 from vk_api.longpoll import VkEventType, VkLongPoll
 
-from intent_converter import detect_intent_texts
+from intent_answer import detect_intent_texts
 from logger import TelegramLogsHandler
 
 

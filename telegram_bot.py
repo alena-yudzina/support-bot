@@ -5,7 +5,7 @@ import telegram
 from dotenv import load_dotenv
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from intent_converter import detect_intent_texts
+from intent_answer import detect_intent_texts
 from logger import TelegramLogsHandler
 
 logger = logging.getLogger('Logger')
