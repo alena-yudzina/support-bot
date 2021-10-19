@@ -19,7 +19,7 @@ def start(update, context):
 
 
 def send_answer(update, context):
-
+    1/0
     dialogflow_project_id = context.bot_data['project_id']
 
     text = detect_intent_texts(
@@ -32,6 +32,10 @@ def send_answer(update, context):
         chat_id=update.effective_chat.id,
         text=text
     )
+
+
+def error(update, context):
+    logger.exception('Проблема с телеграмом')
 
 
 def main():
@@ -51,7 +55,7 @@ def main():
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), send_answer))
-    dispatcher.add_error_handler(TelegramLogsHandler(log_bot, chat_id))
+    dispatcher.add_error_handler(error)
 
     updater.start_polling()
     updater.idle()
