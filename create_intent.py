@@ -38,8 +38,7 @@ def main():
     with open(training_file, 'r') as f:
         training_phrases = json.load(f)
     
-    for key in training_phrases.keys():
-        display_name = key
+    for display_name in training_phrases.keys():
         training_phrases_parts = training_phrases[display_name]['questions']
         message_texts = [training_phrases[display_name]['answer']]
         try:
